@@ -15,6 +15,19 @@ const CardsGrid: FC<{ data: CardsApiResponse | null }> = ({ data }) => {
   const [cardsData, setCardsData] = useState(data);
   const initialData = data;
 
+  const { searchValue } = useSearchContext();
+
+  const [drawerState, setDrawerState] = React.useState<{
+    open: boolean;
+    card: CardInterface | null;
+  }>({ open: false, card: null });
+
+  useEffect(() => {
+    if (searchValue || initialData !== cardsData) {
+      fetchFiltered();
+    }
+  }, [searchValue]);
+
   if (!cardsData) {
     return (
       <Box minHeight="50vh">
@@ -28,12 +41,6 @@ const CardsGrid: FC<{ data: CardsApiResponse | null }> = ({ data }) => {
   }
 
   const { data: cards, count, totalCount, page } = cardsData;
-  const { searchValue } = useSearchContext();
-
-  const [drawerState, setDrawerState] = React.useState<{
-    open: boolean;
-    card: CardInterface | null;
-  }>({ open: false, card: null });
 
   const fetchFiltered = async () => {
     fetchCards({ search: searchValue })
@@ -41,12 +48,6 @@ const CardsGrid: FC<{ data: CardsApiResponse | null }> = ({ data }) => {
       // TODO: introduce proper error handling
       .catch((error) => console.warn(error));
   };
-
-  useEffect(() => {
-    if (searchValue || initialData !== cardsData) {
-      fetchFiltered();
-    }
-  }, [searchValue]);
 
   const toggleDrawer =
     (open: boolean, card?: CardInterface) =>
@@ -105,9 +106,9 @@ const CardsGrid: FC<{ data: CardsApiResponse | null }> = ({ data }) => {
             alignItems="center"
             justifyContent="center"
           >
-            {cards.map((card) => (
+            {cards.map((card, index) => (
               <Grid item key={card.id} xs={10} sm={5} md={3}>
-                <PokemonCard card={card} toggleDrawer={toggleDrawer} />
+                <PokemonCard card={card} toggleDrawer={toggleDrawer} hasPriority={index < 4}/>
               </Grid>
             ))}
           </Grid>

@@ -8,6 +8,8 @@ import {
   Button,
   Skeleton,
 } from "@mui/material";
+import Image from "next/image";
+
 import { CardInterface } from "../interfaces/card";
 
 interface Props {
@@ -16,12 +18,14 @@ interface Props {
     open: boolean,
     card?: CardInterface | undefined
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  hasPriority: boolean;
   isLoading?: boolean;
 }
 
 interface LoadingProps {
   card?: never;
   toggleDrawer?: never;
+  hasPriority?: never;
   isLoading: true;
 }
 
@@ -29,6 +33,7 @@ const PokemonCard: FC<Props | LoadingProps> = ({
   card,
   toggleDrawer,
   isLoading,
+  hasPriority,
 }) => {
   const isLoaded = toggleDrawer && card && !isLoading;
 
@@ -41,7 +46,18 @@ const PokemonCard: FC<Props | LoadingProps> = ({
       }}
     >
       {isLoaded ? (
-        <CardMedia component="img" image={card!.images.small} alt={card!.name} />
+        <CardMedia>
+          <div style={{ position: "relative", width: "100%", height: "100%"}}>
+            <Image
+              src={card!.images.small}
+              alt={card!.name}
+              priority={hasPriority}
+              layout="responsive"
+              width={255}
+              height={355}
+            />
+          </div>
+        </CardMedia>
       ) : (
         <Skeleton sx={{ height: 190 }} animation="wave" variant="rectangular" />
       )}
