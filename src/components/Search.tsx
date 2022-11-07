@@ -1,14 +1,12 @@
-import {
-  useState,
-  FormEvent,
-} from "react";
+import { FormEvent, Dispatch, SetStateAction, FC } from "react";
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
-
+import { useSearchContext } from "../contexts/SearchContext";
 
 const SearchWrapper = styled("div")(({ theme }) => ({
+  display: 'flex',
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -17,7 +15,6 @@ const SearchWrapper = styled("div")(({ theme }) => ({
   },
   marginRight: theme.spacing(1),
   marginLeft: theme.spacing(2),
-  width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -38,7 +35,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Search() {
-  const [searchValue, setSearchValue] = useState("");
+  const {searchValue, setSearchValue} = useSearchContext();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,4 +59,4 @@ export default function Search() {
       </SearchWrapper>
     </form>
   );
-}
+};

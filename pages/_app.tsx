@@ -1,10 +1,11 @@
-import * as React from 'react';
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
+import * as React from "react";
+import Head from "next/head";
+import { AppProps } from "next/app";
+import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider as PreferredThemeProvider } from "next-themes";
-import { MuiThemeProvider } from '../src/theme/MuiThemeProvider';
-import createEmotionCache from '../src/theme/createEmotionCache';
+import { MuiThemeProvider } from "../src/theme/MuiThemeProvider";
+import createEmotionCache from "../src/theme/createEmotionCache";
+import { SearchContextProvider } from "../src/contexts/SearchContext";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -21,7 +22,9 @@ export default function App(props: MyAppProps) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         <MuiThemeProvider>
-          <Component {...pageProps} />
+          <SearchContextProvider>
+            <Component {...pageProps} />
+          </SearchContextProvider>
         </MuiThemeProvider>
       </CacheProvider>
     </PreferredThemeProvider>

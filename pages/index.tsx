@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import Head from "next/head";
 import Typography from "@mui/material/Typography";
 import { css } from "@mui/material/styles";
 
 import Copyright from "../src/components/Copyright";
 import TopBar from "../src/components/TopBar";
+import { CardsApiResponse } from "../src/interfaces/card";
+import CardsGrid from "../src/components/CardsGrid";
+import { GET_CARDS_URL } from "../src/consts/api.consts";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function Home() {
+export async function getServerSideProps() {
+  const res = await fetch(`${GET_CARDS_URL}?pageSize=20&page=1`)
+  const initialData: CardsApiResponse = await res.json();
+
+  return { props: { initialData } }
+}
+
+const Home: FC<{initialData: CardsApiResponse}> = ({ initialData }) => {
   const [mounted, setMounted] = useState(false);
+  const [cardsData, setCardsData] = useState(initialData);
 
   // to prevent dark mode flickering, display UI when mounted
   // @TODO: another solution which might be worth to experiment with could be CSS theme variables
@@ -64,48 +68,17 @@ export default function Home() {
               color="text.secondary"
               paragraph
             >
-              Browse and search for your favorite pokemon cards!
+              Browse your favorite pokemon cards!
             </Typography>
           </Container>
         </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    image="https://source.unsplash.com/random"
-                    alt="random"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Show details</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        <CardsGrid cards={cardsData.data} />
       </main>
-
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Copyright />
       </Box>
     </>
   );
 }
+
+export default Home;

@@ -10,12 +10,6 @@ import Search from "./Search";
 
 export default function TopBar() {
   const { theme, setTheme } = useTheme();
-  const [searchValue, setSearchValue] = useState('');
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(searchValue);
-  };
 
   return (
     <AppBar>
@@ -39,7 +33,7 @@ export default function TopBar() {
             noWrap
             sx={{ display: { xs: "none", sm: "block" }, ml: 1 }}
           >
-            Pokemon cards album
+            Pokemon cards
           </Typography>
         </Box>
         <Box

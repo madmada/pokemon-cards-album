@@ -1,5 +1,5 @@
 import { Roboto } from '@next/font/google';
-import { createTheme, css, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useTheme } from 'next-themes';
