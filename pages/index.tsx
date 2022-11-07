@@ -13,15 +13,19 @@ import { GET_CARDS_URL } from "../src/consts/api.consts";
 
 
 export async function getServerSideProps() {
-  const res = await fetch(`${GET_CARDS_URL}?pageSize=20&page=1`)
-  const initialData: CardsApiResponse = await res.json();
+  const res = await fetch(`${GET_CARDS_URL}?pageSize=20&page=1`).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    return null;
+  });
 
+  const initialData: CardsApiResponse | null = res;
   return { props: { initialData } }
 }
 
-const Home: FC<{initialData: CardsApiResponse}> = ({ initialData }) => {
+const Home: FC<{initialData: CardsApiResponse | null}> = ({ initialData }) => {
   const [mounted, setMounted] = useState(false);
-  const [cardsData, setCardsData] = useState(initialData);
 
   // to prevent dark mode flickering, display UI when mounted
   // @TODO: another solution which might be worth to experiment with could be CSS theme variables
@@ -72,7 +76,7 @@ const Home: FC<{initialData: CardsApiResponse}> = ({ initialData }) => {
             </Typography>
           </Container>
         </Box>
-        <CardsGrid cards={cardsData.data} />
+        <CardsGrid data={initialData} />
       </main>
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Copyright />

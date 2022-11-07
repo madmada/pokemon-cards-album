@@ -1,4 +1,4 @@
-import { FormEvent, Dispatch, SetStateAction, FC } from "react";
+import { FormEvent, useState } from "react";
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
@@ -34,12 +34,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
 export default function Search() {
   const {searchValue, setSearchValue} = useSearchContext();
+  const [inputValue, setInputValue] = useState<string>(searchValue);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(searchValue);
+    setSearchValue(inputValue);
   };
 
   return (
@@ -50,8 +52,8 @@ export default function Search() {
           placeholder="Find Pokemon…"
           inputProps={{ "aria-label": "find pokemon" }}
           name="pokemon-search"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
         />
         <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
           <SearchIcon sx={{ color: "white" }} />
