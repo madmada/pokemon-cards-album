@@ -7,7 +7,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.pokemontcg.io',
-        port: '',
         pathname: '/**',
       },
     ],
