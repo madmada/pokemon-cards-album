@@ -1,9 +1,10 @@
 # pokemon-cards-album
 
-#### Running app instructions
+#### Project preview
 
-@TODO
+You can check the preview on https://pokemon-cards-hazel.vercel.app/
 
-#### Additional infos, that has not been added in comments:
+#### Additional comments to project:
 
-@TODO additional comments
+- Although I’m not very familiar with NextJs, I’ve chosen this framework for this project as a better performance option than SPA.
+- unit/component tests were omitted due to the time limit and easy to test manually logic
